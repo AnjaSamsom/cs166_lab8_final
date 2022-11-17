@@ -1,7 +1,8 @@
 from hash import *
 import sqlite3
 import pandas as pd
-from datetime import date  
+from datetime import date 
+import re 
 
 """
 Lab 8 Final
@@ -58,11 +59,29 @@ def verify(cur):
 
 def add_user(cur, conn):
     username = input("username: ")
-    password = hash_pw(input("password: "))
-    role = input("role: ")
+    raw_password = input("password (8-25 characters, at least one uppercase, one lowercase, one number, and one special character): ")
+    valid, lower, upper, number, special = False
+    while valid == False:
+        for char in str:
+
+            if char.islower():
+                lower = True
+            elif char.isupper():
+                upper = True
+            elif char.isdigit():
+                number = True
+            elif bool(re.match(char)):
+                special = True
+        if (len(raw_password) >= 8 and len(raw_password) <= 25) and lower and upper and number and special:
+            valid = True
+        else:
+            raw_password = input("enter a valid password (8-25 characters, at least one uppercase, one lowercase, one number, and one special character): ")
+    password = hash_pw(raw_password)
+    
+
     cur.execute("SELECT Count(*) FROM info;")
     number = cur.fetchall()[0][0]
-    cur.execute(f'INSERT INTO info (number, username, hashed_password, role) VALUES ({number}, "{username}", "{password}", "{role}");')
+    cur.execute(f'INSERT INTO info (number, username, hashed_password, role) VALUES ({number}, "{username}", "{password}", "user");')
     conn.commit()
 
 # print menu
