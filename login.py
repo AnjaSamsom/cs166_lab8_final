@@ -43,11 +43,12 @@ def verify(cur):
     info = read_file("info.csv")
 
     cur.execute("SELECT username FROM info where username = '"+ username +"';")
-    file_username = str(cur.fetchall())
+    file_username = cur.fetchall()[0][0]
 
     cur.execute("SELECT hashed_password FROM info where username = '"+ username +"';")
-    file_password = str(cur.fetchall())
+    file_password = cur.fetchall()[0][0]
 
+    print(file_username, username)
     if file_username == username:
         u_success = True
     if u_success and authenticate(file_password, password):
