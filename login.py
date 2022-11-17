@@ -20,7 +20,7 @@ def main():
 
     if success == True:
         choice = menu()
-        enter(choice, role)
+        enter(choice, role, cur, conn)
 
     # exits if login does not match
     else:
@@ -39,14 +39,14 @@ def verify(cur):
     # use hash_pw method to get the hash of the password
     hashed_pw = hash_pw(password)
 
-    # get list from read_file
-    info = read_file("info.csv")
-
     cur.execute("SELECT username FROM info where username = '"+ username +"';")
     file_username = cur.fetchall()[0][0]
 
     cur.execute("SELECT hashed_password FROM info where username = '"+ username +"';")
     file_password = cur.fetchall()[0][0]
+
+    cur.execute("SELECT role FROM info where username = '"+ username +"';")
+    role = cur.fetchall()[0][0]
 
     print(file_username, username)
     if file_username == username:
@@ -56,6 +56,15 @@ def verify(cur):
         print("login successful")
     return (str(role).strip(), success)
 
+def add_user(cur, conn):
+    username = input("username: ")
+    password = hash_pw(input("password: "))
+    role = input("role: ")
+    cur.execute("SELECT Count(*) FROM info;")
+    number = cur.fetchall()[0][0]
+    cur.execute(f'INSERT INTO info (number, username, hashed_password, role) VALUES ("{number}, {username}", "{password}", "{role}");')
+    conn.commit()
+
 # print menu
 def menu():
     print("Options:")
@@ -63,26 +72,13 @@ def menu():
     print("2 - enter time")
     print("3 - schedule repair")
     print("4 - charge customer")
-    print("5 - display menu again")
+    print("5 - add new user")
+    print("6 - display menu again")
     
     return input("Please enter an option: ")
 
-# read in information from file and put into 2D list
-def read_file(filename):
-    info = []
-    try:
-        f = open(filename, "r")
-
-    except:
-        print("file could not be opened")
-    else:
-        for line in f.readlines():
-            user_info = line.split(",")
-            info.append(user_info)
-    return info
-
 # allows user to enter options
-def enter(choice, role):
+def enter(choice, role, cur, conn):
     choice = int(choice)
     if choice == 1:
         # allow access
@@ -114,8 +110,16 @@ def enter(choice, role):
             print("You do not have access to this feature")
             choice = menu()
             enter(choice, role)
-    # redisplay menu
     if choice == 5:
+        if role == "owner":
+            print("Access to add user granted")
+            add_user(cur, conn)
+        else:
+            print("You do not have access to this feature add a user")
+            choice = menu()
+            enter(choice, role, cur, conn)
+    # redisplay menu
+    if choice == 6:
         choice = menu()
         enter(choice, role)
 
