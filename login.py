@@ -62,7 +62,7 @@ def add_user(cur, conn):
     role = input("role: ")
     cur.execute("SELECT Count(*) FROM info;")
     number = cur.fetchall()[0][0]
-    cur.execute(f'INSERT INTO info (number, username, hashed_password, role) VALUES ("{number}, {username}", "{password}", "{role}");')
+    cur.execute(f'INSERT INTO info (number, username, hashed_password, role) VALUES ({number}, "{username}", "{password}", "{role}");')
     conn.commit()
 
 # print menu
