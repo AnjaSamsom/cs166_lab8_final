@@ -20,11 +20,12 @@ def home():
     if request.method == 'POST':
         submitted_pass = request.form['password']
         submitted_username = request.form['username']
-        verified = verify(submitted_username, submitted_pass)
-        print(verified)
-        if verified:
-            logged_in()
+        role, success = verify(submitted_username, submitted_pass)
+        print("working on it...")
+        print(success)
+        if success:
+            return render_template('success.html')
         else:
-            not_logged_in()
+            return render_template('nope.html')
     elif request.method == 'GET':
         return render_template('home.html')

@@ -3,7 +3,7 @@ import sqlite3
 import pandas as pd
 from datetime import * 
 import random
-conn = sqlite3.connect("login_info.db")
+conn = sqlite3.connect("login_info.db", check_same_thread=False)
 cur = conn.cursor()
 
 
