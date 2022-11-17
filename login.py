@@ -1,8 +1,8 @@
 from hash import *
 import sqlite3
 import pandas as pd
-from datetime import date 
-import re 
+from datetime import * 
+import random
 
 """
 Lab 8 Final
@@ -57,9 +57,48 @@ def verify(cur):
         print("login successful")
     return (str(role).strip(), success)
 
+def generate_password():
+    # how long is the password going to be
+    pass_len = random.randint(8,25)
+
+    # one random number for every character in the password
+    password_list = [random.randint(-1000,1000) for i in range (0,pass_len)]
+
+    special = "!@#$%^&*()_+-=<>?,./':;[]|"
+    lower = "qwertyuiopasdfghjklzxcvbnm"
+    upper = "QWERTYUIOPASDFGHJKLZXCVBNM"
+    number = "1234567890"
+    password = ""
+
+    for num in password_list:
+        if num >= 0:
+            # make positive numbers letters, even are uppercase, odd are lowercase
+            index = random.randint(0,25)
+            if num%2 == 0:
+                # uppercase
+                password += upper[index]
+            else:
+                # lowercase
+                password += lower[index]
+            
+        else:
+            # make negative numbers numbers and special character, even are special characters, odd are numbers
+            if num%2 == 0:
+                # special character
+                index = random.randint(0,len(special)-1)
+                password += special[index]
+            else:
+                # number
+                index = random.randint(0,len(number)-1)
+                password += number[index]
+    return password
+
 def add_user(cur, conn):
     username = input("username: ")
+    print("Add a password of type generate for a generated secure pasword")
     raw_password = input("password (8-25 characters, at least one uppercase, one lowercase, one number, and one special character): ")
+    if raw_password == "generate":
+        raw_password = generate_password()
     valid = False
     lower = False
     upper = False

@@ -1,26 +1,47 @@
 from hash import *
 import sqlite3
 import pandas as pd
-from datetime import date 
-import re     
-raw_password = input("password (8-25 characters, at least one uppercase, one lowercase, one number, and one special character): ")
-valid = False
-lower = False
-upper = False
-number = False
-special = False
-while valid == False:
-    for char in raw_password:
-        if char.islower():
-            lower = True
-        elif char.isupper():
-            upper = True
-        elif char.isdigit():
-            number = True
-        else: 
-            special = True
-    if (len(raw_password) >= 8 and len(raw_password) <= 25) and lower and upper and number and special:
-        valid = True
+import datetime
+import random
+
+# how long is the password going to be
+pass_len = random.randint(8,25)
+
+# one random number for every character in the password
+password_list = [random.randint(-1000,1000) for i in range (0,pass_len)]
+print(password_list)
+
+special = "!@#$%^&*()_+-=<>?,./':;[]|"
+lower = "qwertyuiopasdfghjklzxcvbnm"
+upper = "QWERTYUIOPASDFGHJKLZXCVBNM"
+number = "1234567890"
+password = ""
+
+for num in password_list:
+    if num >= 0:
+        # make positive numbers letters, even are uppercase, odd are lowercase
+        index = random.randint(0,25)
+        if num%2 == 0:
+            # uppercase
+            password += upper[index]
+        else:
+            # lowercase
+            password += lower[index]
+        
     else:
-        raw_password = input("enter a valid password (8-25 characters, at least one uppercase, one lowercase, one number, and one special character): ")
-password = hash_pw(raw_password)
+        # make negative numbers numbers and special character, even are special characters, odd are numbers
+        if num%2 == 0:
+            # special character
+            index = random.randint(0,len(special)-1)
+            password += special[index]
+        else:
+            # number
+            index = random.randint(0,len(number)-1)
+            password += number[index]
+print(password)
+
+
+
+
+
+
