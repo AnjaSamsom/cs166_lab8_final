@@ -12,16 +12,12 @@ special = False
 while valid == False:
     for char in raw_password:
         if char.islower():
-            print("pass lower")
             lower = True
         elif char.isupper():
-            print("pass upper")
             upper = True
         elif char.isdigit():
-            print("pass digit")
             number = True
-        elif(lower == False and upper == False and number == False): 
-            print("pass special")
+        else: 
             special = True
     if (len(raw_password) >= 8 and len(raw_password) <= 25) and lower and upper and number and special:
         valid = True
