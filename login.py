@@ -1,4 +1,8 @@
 from hash import *
+import sqlite3
+import pandas as pd
+from datetime import date  
+
 """
 Lab 8 Final
 Anja Samsom
@@ -10,7 +14,9 @@ the user types in a username and password and then
 can chose options from a menu
 """
 def main():
-    role, success = verify()
+    conn = sqlite3.connect("login_info.db")
+    cur = conn.cursor()
+    role, success = verify(cur)
 
     if success == True:
         choice = menu()
@@ -21,7 +27,7 @@ def main():
         print("Incorrect login, quitting...")
 
 # read in login information from csv and verify
-def verify():
+def verify(cur):
     role = ""
     success = False
     u_success = False
@@ -36,15 +42,17 @@ def verify():
     # get list from read_file
     info = read_file("info.csv")
 
-    # for the list in the 2D list
-    for user in info:
-        file_username = user[0]
-        file_password = user[1]
-        if file_username == username:
-            u_success = True
-        if u_success and authenticate(file_password, password):
-            success = True
-            print("login successful")
+    cur.execute("SELECT username FROM info where username = '"+ username +"';")
+    file_username = str(cur.fetchall())
+
+    cur.execute("SELECT hashed_password FROM info where username = '"+ username +"';")
+    file_password = str(cur.fetchall())
+
+    if file_username == username:
+        u_success = True
+    if u_success and authenticate(file_password, password):
+        success = True
+        print("login successful")
     return (str(role).strip(), success)
 
 # print menu
