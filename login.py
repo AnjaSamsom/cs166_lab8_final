@@ -3,6 +3,9 @@ import sqlite3
 import pandas as pd
 from datetime import * 
 import random
+conn = sqlite3.connect("login_info.db")
+cur = conn.cursor()
+
 
 """
 Lab 8 Final
@@ -14,28 +17,26 @@ have limited access
 the user types in a username and password and then
 can chose options from a menu
 """
-def main():
-    conn = sqlite3.connect("login_info.db")
-    cur = conn.cursor()
-    role, success = verify(cur)
+""" def main():
+    role, success = verify()
 
     if success == True:
         choice = menu()
-        enter(choice, role, cur, conn)
+        enter(choice, role)
 
     # exits if login does not match
     else:
-        print("Incorrect login, quitting...")
+        print("Incorrect login, quitting...") """
 
 # read in login information from csv and verify
-def verify(cur):
+def verify(username, password):
     role = ""
     success = False
     u_success = False
 
     # user input
-    username = input("username: ")
-    password = input("password: ")
+    #username = input("username: ")
+    #password = input("password: ")
 
     # use hash_pw method to get the hash of the password
     hashed_pw = hash_pw(password)
@@ -93,7 +94,7 @@ def generate_password():
                 password += number[index]
     return password
 
-def add_user(cur, conn):
+def add_user():
     username = input("username: ")
     print("Add a password of type generate for a generated secure pasword")
     raw_password = input("password (8-25 characters, at least one uppercase, one lowercase, one number, and one special character): ")
@@ -137,7 +138,7 @@ def menu():
     return input("Please enter an option: ")
 
 # allows user to enter options
-def enter(choice, role, cur, conn):
+def enter(choice, role):
     choice = int(choice)
     if choice == 1:
         # allow access
@@ -182,4 +183,4 @@ def enter(choice, role, cur, conn):
         choice = menu()
         enter(choice, role)
 
-main()
+#main()
