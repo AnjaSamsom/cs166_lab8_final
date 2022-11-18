@@ -16,24 +16,24 @@ def logged_in():
 def not_logged_in():
     return render_template('nope.html')
 
-@app.route("/add", methods=['GET', 'POST'])
-def not_logged_in():
+@app.route("/add_user", methods=['GET', 'POST'])
+def add_user():
     return render_template('add.html')
 
 @app.route("/charge", methods=['GET', 'POST'])
-def not_logged_in():
+def charge():
     return render_template('charge.html')
 
-@app.route("/add", methods=['GET', 'POST'])
-def not_logged_in():
+@app.route("/order", methods=['GET', 'POST'])
+def order():
     return render_template('order.html')
 
-@app.route("/charge", methods=['GET', 'POST'])
-def not_logged_in():
+@app.route("/schedule", methods=['GET', 'POST'])
+def schedule():
     return render_template('schedule.html')
 
-@app.route("/charge", methods=['GET', 'POST'])
-def not_logged_in():
+@app.route("/time", methods=['GET', 'POST'])
+def add_time():
     return render_template('time.html')
     
 @app.route("/login", methods=['GET', 'POST'])
