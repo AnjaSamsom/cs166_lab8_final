@@ -20,7 +20,7 @@ def home():
     if request.method == 'POST':
         submitted_pass = request.form['password']
         submitted_username = request.form['username']
-        role, success = verify(submitted_username, submitted_pass)
+        success = verify(submitted_username, submitted_pass)
         print("working on it...")
         print(success)
         if success:

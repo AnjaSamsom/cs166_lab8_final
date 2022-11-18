@@ -5,6 +5,7 @@ from datetime import *
 import random
 conn = sqlite3.connect("login_info.db", check_same_thread=False)
 cur = conn.cursor()
+role = ""
 
 
 """
@@ -18,7 +19,7 @@ the user types in a username and password and then
 can chose options from a menu
 """
 """ def main():
-    role, success = verify()
+    success = verify()
 
     if success == True:
         choice = menu()
@@ -41,22 +42,36 @@ def verify(username, password):
     # use hash_pw method to get the hash of the password
     hashed_pw = hash_pw(password)
 
-    cur.execute("SELECT username FROM info where username = '"+ username +"';")
-    file_username = cur.fetchall()[0][0]
+    cur.execute("SELECT username FROM info;")
+    usernames = cur.fetchall()[0]
+    print(usernames)
 
-    cur.execute("SELECT hashed_password FROM info where username = '"+ username +"';")
-    file_password = cur.fetchall()[0][0]
+    if username in usernames:
+        print("in usernames")
+        cur.execute("SELECT username FROM info where username = '"+ username +"';")
+        file_username = cur.fetchall()[0][0]
 
-    cur.execute("SELECT role FROM info where username = '"+ username +"';")
-    role = cur.fetchall()[0][0]
+        cur.execute("SELECT hashed_password FROM info where username = '"+ username +"';")
+        file_password = cur.fetchall()[0][0]
 
-    print(file_username, username)
-    if file_username == username:
-        u_success = True
-    if u_success and authenticate(file_password, password):
-        success = True
-        print("login successful")
-    return (str(role).strip(), success)
+        cur.execute("SELECT role FROM info where username = '"+ username +"';")
+        role = cur.fetchall()[0][0]
+
+        print(file_username, username)
+        if file_username == username:
+            print("username match")
+            u_success = True
+        if u_success and authenticate(file_password, password):
+            success = True
+            print("login successful")
+            print("password and username match")
+            print("final" + str(success))
+            if role == None:
+                role = ""
+            return str(success)
+        else:
+            print("final" + str(success))
+            return False
 
 def generate_password():
     # how long is the password going to be
