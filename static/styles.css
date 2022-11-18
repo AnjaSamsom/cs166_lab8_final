@@ -23,14 +23,6 @@ body{
 
 }
 
-.nav_text{
-    color: var(--light);
-    font-family: "Georgia", serif;
-}
-
-.active{
-    color: var(--sage);
-}
 
 nav, footer{
     background-color: var(--indigo);
@@ -69,67 +61,6 @@ h1{
     margin: auto;
 }
 
-
-.grid1{
-    display:grid;
-    grid-template-columns: auto;
-    width: 80%;
-    margin: auto;
-}
-
-
-
-.news_story{
-    width: 70%;
-    margin: auto;
-    padding: 2.5%;
-    text-align: center;
-    border-style: dotted;
-    border-color:var(--sage);
-}
-
-#spotlight{
-    grid-area:1/1/2/2;
-}
-
-
-#scholarship{
-    grid-area:2/1/3/2;
-}
-
-#sophomore_award{
-    grid-area:3/1/4/2;
-}
-
-
-#giv_insta{
-    grid-area:4/1/5/2;
-}
-
-
-
-#wage{
-    grid-area:5/1/6/2;
-}
-
-#cs_fair{
-    grid-area:6/1/7/2;
-}
-
-#mhs_award{
-    grid-area:7/1/8/2;    
-}
-
-#maker{
-    grid-area:8/1/9/2;
-}
-
-#giv{
-    grid-area:9/1/10/2;
-}
-
-
-
 a:link { text-decoration: none; }
 
 
@@ -141,82 +72,5 @@ a:hover { text-decoration: none; }
 
 a:active { text-decoration: none; }
 
-#anja_photo{
-    width: 60%;
-    margin: auto;
-    padding: 2.5%;
-}
 
-.header2{
-    margin: auto; 
-}
-
-
-.grid2{
-    display:grid;
-    grid-template-columns: auto auto;
-    width: 80%;
-    margin: auto;
-}
-
-
-
-#bio{
-    width: 80%;
-    margin: auto;
-    padding: 10% 1.5%;
-    margin: auto;
-    padding: 2.5%;
-    text-align: center;
-}
-
-#photo{
-    grid-area:1/1/4/2;
-}
-
-#anja_headshot{
-    width: 20em;
-}
-
-#introduction{
-    grid-area:2/2/3/3;
-}
-
-.img_small{
-    width:15em;
-    padding: 8%;
-}
-
-.news_image{
-    width: 30em;
-}
-
-.grid3{
-    display:grid;
-    width: 80%;
-    margin: auto;
-    grid-template-columns: 33% 33% 33%;
-    grid-template-rows: 30 em 30em 30em 30em;
-
-}
-
-.detail{
-    padding: 8%;
-}
-
-.sml_txt{
-    font-size: small;
-    width: 60%;
-    margin: auto;
-}
-
-.about{
-    width: 60%;
-    margin: auto;
-}
-
-#pdf{
-    width: 80%;
-    margin: auto 10%;
-}
 

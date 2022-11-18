@@ -16,6 +16,26 @@ def logged_in():
 def not_logged_in():
     return render_template('nope.html')
 
+@app.route("/add", methods=['GET', 'POST'])
+def not_logged_in():
+    return render_template('add.html')
+
+@app.route("/charge", methods=['GET', 'POST'])
+def not_logged_in():
+    return render_template('charge.html')
+
+@app.route("/add", methods=['GET', 'POST'])
+def not_logged_in():
+    return render_template('order.html')
+
+@app.route("/charge", methods=['GET', 'POST'])
+def not_logged_in():
+    return render_template('schedule.html')
+
+@app.route("/charge", methods=['GET', 'POST'])
+def not_logged_in():
+    return render_template('time.html')
+    
 @app.route("/login", methods=['GET', 'POST'])
 def home():
     if request.method == 'POST':
