@@ -13,10 +13,28 @@
 
 <body>
     <h1>Computer Repair</h1>
-    <p>Add user</p>
-    <a href="/home">
-        <button>Back</button>
-    </a> 
+    <section>
+        <p>Add user</p>
+        <a href="/login">
+            <button>Back</button>
+        </a> 
+        <section>
+            <h2>Add new user</h2>
+            <p>Type a username and a valid password (8-25 characters, at least one uppercase, 
+                one lowercase, one number, and one special character)</p>
+            <p>Or, leave the password field empty for a generated password</p>
+            <form action="/new_user" method="POST">
+                <label for="username">username:</label>
+                <input type="text" id="username" name="username" placeholder="username"><br><br>
+                <label for="password">password:</label>
+                <input type="text" id="password" name="password" placeholder="password"><br><br>
+                <input type="submit" value="Submit"> 
+            </form>
+        </section>
+
+        
+    </section>
+
   
 </body>
 

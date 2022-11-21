@@ -23,6 +23,22 @@ body{
 
 }
 
+button{
+    background-color: var(--sage);
+    color: var(--light);
+    border-radius: 0.2em;
+    font-family: "Optima", sans-serif;
+    text-decoration: none;
+    border: none;
+    border-radius: 4px;
+    margin: 1.5%;
+    width: 120px;
+    height: 40px;
+}
+
+section{
+    margin: 10%;
+}
 
 nav, footer{
     background-color: var(--indigo);
@@ -32,11 +48,6 @@ nav, footer{
     border-radius: 0.2em;
 }
 
-.nav_link{
-    color: var(--light);
-    text-decoration: none;
-    padding: 5% 1%;
-}
 
 h1, h2, h3{
     color: var(--sage);
@@ -53,6 +64,7 @@ h2, h3{
 p{
     color: var(--dark);
     text-decoration: none;
+    margin: 1.2%;
 
 }
 
@@ -60,17 +72,6 @@ h1{
     width: 80%;
     margin: auto;
 }
-
-a:link { text-decoration: none; }
-
-
-a:visited { text-decoration: none; }
-
-
-a:hover { text-decoration: none; }
-
-
-a:active { text-decoration: none; }
 
 
 

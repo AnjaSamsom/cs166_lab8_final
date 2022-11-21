@@ -16,9 +16,27 @@ def logged_in():
 def not_logged_in():
     return render_template('nope.html')
 
-@app.route("/add_user", methods=['GET', 'POST'])
-def add_user():
-    return render_template('add.html')
+@app.route("/user_added", methods=['GET', 'POST'])
+def user_added():
+    return render_template('user_added.html')
+
+
+@app.route("/new_user", methods=['GET', 'POST'])
+def new_user():
+    if request.method == 'POST':
+        password = request.form['password']
+        username = request.form['username']
+        # this method returns the true if the password is valid
+        # and false if not, so we will send them to another
+        # page if the password isn't valid
+        success = add_user(username, password)
+        print(success)
+        if success:
+            return render_template('user_added.html')
+        else:
+            return render_template('add.html')
+    elif request.method == 'GET':
+        return render_template('add.html')
 
 @app.route("/charge", methods=['GET', 'POST'])
 def charge():

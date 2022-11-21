@@ -109,36 +109,43 @@ def generate_password():
                 password += number[index]
     return password
 
-def add_user():
-    username = input("username: ")
-    print("Add a password of type generate for a generated secure pasword")
-    raw_password = input("password (8-25 characters, at least one uppercase, one lowercase, one number, and one special character): ")
-    if raw_password == "generate":
+def add_user(username, raw_password):
+    print("right here" + raw_password + "this is it")
+    if raw_password == "":
+        print("making a password...")
         raw_password = generate_password()
-    valid = False
-    lower = False
-    upper = False
-    number = False
-    special = False
-    while valid == False:
-        for char in raw_password:
-            if char.islower():
-                lower = True
-            elif char.isupper():
-                upper = True
-            elif char.isdigit():
-                number = True
-            else: 
-                special = True
-        if (len(raw_password) >= 8 and len(raw_password) <= 25) and lower and upper and number and special:
-            valid = True
-        else:
-            raw_password = input("enter a valid password (8-25 characters, at least one uppercase, one lowercase, one number, and one special character): ")
-    password = hash_pw(raw_password)
-    cur.execute("SELECT Count(*) FROM info;")
-    number = cur.fetchall()[0][0]
-    cur.execute(f'INSERT INTO info (number, username, hashed_password, role) VALUES ({number}, "{username}", "{password}", "user");')
-    conn.commit()
+        password = hash_pw(raw_password)
+        cur.execute("SELECT Count(*) FROM info;")
+        number = cur.fetchall()[0][0]
+        cur.execute(f'INSERT INTO info (number, username, hashed_password, role) VALUES ({number}, "{username}", "{password}", "user");')
+        conn.commit()
+        return True
+    else:
+        valid = False
+        lower = False
+        upper = False
+        number = False
+        special = False
+        while valid == False:
+            for char in raw_password:
+                if char.islower():
+                    lower = True
+                elif char.isupper():
+                    upper = True
+                elif char.isdigit():
+                    number = True
+                else: 
+                    special = True
+            if (len(raw_password) >= 8 and len(raw_password) <= 25) and lower and upper and number and special:
+                valid = True
+                password = hash_pw(raw_password)
+                cur.execute("SELECT Count(*) FROM info;")
+                number = cur.fetchall()[0][0]
+                cur.execute(f'INSERT INTO info (number, username, hashed_password, role) VALUES ({number}, "{username}", "{password}", "user");')
+                conn.commit()
+                return True
+            else:
+                return False
 
 # print menu
 def menu():
