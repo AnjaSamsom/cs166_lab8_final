@@ -110,9 +110,7 @@ def generate_password():
     return password
 
 def add_user(username, raw_password):
-    print("right here" + raw_password + "this is it")
     if raw_password == "":
-        print("making a password...")
         raw_password = generate_password()
         password = hash_pw(raw_password)
         cur.execute("SELECT Count(*) FROM info;")
