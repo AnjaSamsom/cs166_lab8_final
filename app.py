@@ -23,21 +23,24 @@ def user_added():
 
 @app.route("/new_user", methods=['GET', 'POST'])
 def new_user():
-    if request.method == 'POST':
-        password = request.form['password']
-        username = request.form['username']
-        # this method returns the true if the password is valid
-        # and false if not, so we will send them to another
-        # page if the password isn't valid
-        success = add_user(username, password)
-        print(success)
-        if success:
-            role = get_role()
-            return render_template('user_added.html')
-        else:
+    if role == "owner":
+        if request.method == 'POST':
+            password = request.form['password']
+            username = request.form['username']
+            # this method returns the true if the password is valid
+            # and false if not, so we will send them to another
+            # page if the password isn't valid
+            success = add_user(username, password)
+            print(success)
+            if success:
+                role = get_role()
+                return render_template('user_added.html')
+            else:
+                return render_template('add.html')
+        elif request.method == 'GET':
             return render_template('add.html')
-    elif request.method == 'GET':
-        return render_template('add.html')
+    else:
+        return render_template('no_access.html')
 
 @app.route("/charge", methods=['GET', 'POST'])
 def charge():
