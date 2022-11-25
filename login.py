@@ -5,7 +5,6 @@ from datetime import *
 import random
 conn = sqlite3.connect("login_info.db", check_same_thread=False)
 cur = conn.cursor()
-role = ""
 
 
 """
@@ -18,59 +17,47 @@ have limited access
 the user types in a username and password and then
 can chose options from a menu
 """
-""" def main():
-    success = verify()
 
-    if success == True:
-        choice = menu()
-        enter(choice, role)
 
-    # exits if login does not match
-    else:
-        print("Incorrect login, quitting...") """
+def get_role():
+    return role
 
-# read in login information from csv and verify
+# read in login information and verify
 def verify(username, password):
-    role = ""
-    success = False
     u_success = False
-
-    # user input
-    #username = input("username: ")
-    #password = input("password: ")
-
-    # use hash_pw method to get the hash of the password
-    hashed_pw = hash_pw(password)
+    global role
 
     cur.execute("SELECT username FROM info;")
-    usernames = cur.fetchall()[0]
-    print(usernames)
+    usernames = cur.fetchall()
 
-    if username in usernames:
-        print("in usernames")
+    print(usernames)
+    print(username)
+
+
+    u_list = []
+    for u in usernames:
+        u_list.append(u[0])
+
+    print("made new list")
+
+    if username in u_list:
+        print("in usernames: " + username)
         cur.execute("SELECT username FROM info where username = '"+ username +"';")
         file_username = cur.fetchall()[0][0]
 
         cur.execute("SELECT hashed_password FROM info where username = '"+ username +"';")
         file_password = cur.fetchall()[0][0]
+        print(file_password)
 
-        cur.execute("SELECT role FROM info where username = '"+ username +"';")
-        role = cur.fetchall()[0][0]
-
-        print(file_username, username)
         if file_username == username:
-            print("username match")
             u_success = True
         if u_success and authenticate(file_password, password):
+            print("matched")
             success = True
-            print("login successful")
-            print("password and username match")
-            print("final" + str(success))
-            if role == None:
-                role = ""
-            return str(success)
+            cur.execute("SELECT role FROM info where username = '"+ username +"';")
+            role = cur.fetchall()[0][0]
+            return True
         else:
-            print("final" + str(success))
             return False
 
 def generate_password():
@@ -144,63 +131,3 @@ def add_user(username, raw_password):
                 return True
             else:
                 return False
-
-# print menu
-def menu():
-    print("Options:")
-    print("1 - order from manufacturer")
-    print("2 - enter time")
-    print("3 - schedule repair")
-    print("4 - charge customer")
-    print("5 - add new user")
-    print("6 - display menu again")
-    
-    return input("Please enter an option: ")
-
-# allows user to enter options
-def enter(choice, role):
-    choice = int(choice)
-    if choice == 1:
-        # allow access
-        if role == "owner":
-            print("Access to order from manufacturer granted")
-        # do not allow access and let user select again
-        else:
-            print("You do not have access to this feature")
-            choice = menu()
-            enter(choice, role)
-    if choice == 2:
-        if role == "owner" or role == "employee":
-            print("Access to enter time granted")
-        else:
-            print("You do not have access to this feature")
-            choice = menu()
-            enter(choice, role)
-    if choice == 3:
-        if role == "owner" or role == "employee" or role == "customer":
-            print("Access to schedule repair granted")
-        else:
-            print("You do not have access to this feature")
-            choice = menu()
-            enter(choice, role)
-    if choice == 4:
-        if role == "owner" or role == "employee":
-            print("Access to charge customer granted")
-        else:
-            print("You do not have access to this feature")
-            choice = menu()
-            enter(choice, role)
-    if choice == 5:
-        if role == "owner":
-            print("Access to add user granted")
-            add_user(cur, conn)
-        else:
-            print("You do not have access to this feature add a user")
-            choice = menu()
-            enter(choice, role, cur, conn)
-    # redisplay menu
-    if choice == 6:
-        choice = menu()
-        enter(choice, role)
-
-#main()

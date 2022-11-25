@@ -1,12 +1,13 @@
 from flask import Flask, render_template, request
 from login import *
 
+role = None
+
 app = Flask(__name__)
 conn = sqlite3.connect("login_info.db")
 cur = conn.cursor()
 
 # run this with flask --app app run
-
 
 @app.route("/success", methods=['GET', 'POST'])
 def logged_in():
@@ -20,7 +21,6 @@ def not_logged_in():
 def user_added():
     return render_template('user_added.html')
 
-
 @app.route("/new_user", methods=['GET', 'POST'])
 def new_user():
     if request.method == 'POST':
@@ -32,6 +32,7 @@ def new_user():
         success = add_user(username, password)
         print(success)
         if success:
+            role = get_role()
             return render_template('user_added.html')
         else:
             return render_template('add.html')
@@ -40,29 +41,49 @@ def new_user():
 
 @app.route("/charge", methods=['GET', 'POST'])
 def charge():
-    return render_template('charge.html')
+    role = get_role()
+    if role == "owner" or role == "employee":
+        return render_template('charge.html')
+    else:
+        return render_template('no_access.html')
 
 @app.route("/order", methods=['GET', 'POST'])
 def order():
-    return render_template('order.html')
+    role = get_role()
+    if role == "owner":
+        return render_template('order.html')
+    else:
+        return render_template('no_access.html')
 
 @app.route("/schedule", methods=['GET', 'POST'])
 def schedule():
-    return render_template('schedule.html')
+    role = get_role()
+    if role == "owner" or role == "employee" or role == "customer":
+        return render_template('schedule.html')
+    else:
+        return render_template('no_access.html')
 
 @app.route("/time", methods=['GET', 'POST'])
 def add_time():
-    return render_template('time.html')
-    
+    role = get_role()
+    if role == "owner" or role == "employee":
+        return render_template('time.html')
+    else:
+        return render_template('no_access.html')  
+
 @app.route("/login", methods=['GET', 'POST'])
 def home():
     if request.method == 'POST':
         submitted_pass = request.form['password']
         submitted_username = request.form['username']
+
+        print("app.py")
+
         success = verify(submitted_username, submitted_pass)
-        print("working on it...")
         print(success)
+
         if success:
+            role = get_role()
             return render_template('success.html')
         else:
             return render_template('nope.html')
