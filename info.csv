@@ -1,7 +1,7 @@
 username,hashed_password,role
-anja,b'\x16\x92\x1a#\xf1\x8e\x88\xecYv\x87\xb531b2f26d9c535a07b73e5c4b1417857c6338c9d,owner
-makayla,b"$\x98\xea\xbe\xf0\x9b\xc2\xb1\xdd\xe2)cfb54115f4cb51899bfed9a0612452077367ae01,employee
-fernanda,b'\x08\x81\xa7\x04^\xc3\x02\x06\xdbZ\xccbb8f79e22c02b884e36d26d10febad331e841c2b,employee
-user1,b"(\x08\\\xdc\xf7\x10\xa0\x90)\xbe\xd1O'fcb8e75dbe3863fbd22c92291bbfd5a2d64e1702,customer
-user2,b"A\xa8;\xbe\xaf\nx\xcb\x18'\xd1#\xcb\xabc1835d78c26b5dc6e58da2d83056fa642b540a7,customer
-user3,b'^-s\xf5ph2i\x9c\xca\xd1H\xc1\xc0\xafUL370d2329bb23153a5d9878e8eb8ce3e4ef559cc0,customer
+anja,b'\x1f|\xa9\xef\xe0\x07zZ\x04\x1f\xf5"\x7fc9d1e808c8590fa59014a2ad7f18b1d882e8dc,owner
+makayla,b'\x7fM\xbcc\xb64\xa3pB\xc9\xc7\\\x0eK\x81b97d24bb9634d81a198250ac0e2ad59fea77a9,employee
+fernanda,b'\xc8/)\x7f\xedZ\xd7|j\xe1C\xb6\xab\xfa4b3a2379224b3bdc65a408585e47bc7769a66770,employee
+user1,b'\x819\x8c\x19\xc7*X\x1e\xa4L\xcfO~\xdb4fd44168d7c53f843d656b203aa680def305ed01,customer
+user2,b'k\x84\x03\xbcGmA\xe8J\xf0\xd9Zg\xc4\xd0135576ccde15e8354234fb9311955be5f8d9e48,customer
+user3,b'7\x97\x06u\x81\xe9o\xd8B\x7f*VMK\x0e\x404f6fea5bab89fab55aa80142cacb4d95010b37,customer

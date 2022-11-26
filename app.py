@@ -23,10 +23,16 @@ def user_added():
 
 @app.route("/new_user", methods=['GET', 'POST'])
 def new_user():
+    role = get_role()
     if role == "owner":
         if request.method == 'POST':
             password = request.form['password']
             username = request.form['username']
+
+            # sanitizing input
+            password = sanitize(password)
+            username = sanitize(username)
+            
             # this method returns the true if the password is valid
             # and false if not, so we will send them to another
             # page if the password isn't valid
@@ -79,6 +85,12 @@ def home():
     if request.method == 'POST':
         submitted_pass = request.form['password']
         submitted_username = request.form['username']
+
+        # sanitizing input
+        submitted_pass = sanitize(submitted_pass)
+        submitted_username = sanitize(submitted_username)
+
+
 
         print("app.py")
 

@@ -67,7 +67,7 @@ def generate_password():
     # one random number for every character in the password
     password_list = [random.randint(-1000,1000) for i in range (0,pass_len)]
 
-    special = "!@#$%^&*()_+-=<>?,./':;[]|"
+    special = "!@#$^&*()_+-=<>?,./:;[]|"
     lower = "qwertyuiopasdfghjklzxcvbnm"
     upper = "QWERTYUIOPASDFGHJKLZXCVBNM"
     number = "1234567890"
@@ -120,7 +120,9 @@ def add_user(username, raw_password):
                 elif char.isdigit():
                     number = True
                 else: 
-                    special = True
+                    # making sure passwords don't have characters that I will filter out later for XSS
+                    if char != "%" and char != "'" and char != '"':
+                        special = True
             if (len(raw_password) >= 8 and len(raw_password) <= 25) and lower and upper and number and special:
                 valid = True
                 password = hash_pw(raw_password)
@@ -131,3 +133,11 @@ def add_user(username, raw_password):
                 return True
             else:
                 return False
+
+
+def sanitize(inputted):
+    inputted = inputted.replace("'", "")
+    inputted = inputted.replace('"', "")
+    inputted = inputted.replace("%", "")
+
+    return inputted
