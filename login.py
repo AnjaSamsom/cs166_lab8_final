@@ -97,6 +97,8 @@ def generate_password():
     return password
 
 def add_user(username, raw_password):
+    if username == "":
+        return (False, "")
     if raw_password == "":
         raw_password = generate_password()
         password = hash_pw(raw_password)
@@ -104,7 +106,7 @@ def add_user(username, raw_password):
         number = cur.fetchall()[0][0]
         cur.execute(f'INSERT INTO info (number, username, hashed_password, role) VALUES ({number}, "{username}", "{password}", "user");')
         conn.commit()
-        return True
+        return (True, raw_password)
     else:
         valid = False
         lower = False
@@ -130,9 +132,9 @@ def add_user(username, raw_password):
                 number = cur.fetchall()[0][0]
                 cur.execute(f'INSERT INTO info (number, username, hashed_password, role) VALUES ({number}, "{username}", "{password}", "user");')
                 conn.commit()
-                return True
+                return (True, raw_password)
             else:
-                return False
+                return (False, "")
 
 
 def sanitize(inputted):

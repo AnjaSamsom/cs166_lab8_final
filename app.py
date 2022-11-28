@@ -36,11 +36,14 @@ def new_user():
             # this method returns the true if the password is valid
             # and false if not, so we will send them to another
             # page if the password isn't valid
-            success = add_user(username, password)
+            value = add_user(username, password)
+            success = value[0]
+            generated_password = value[1]
             print(success)
             if success:
                 role = get_role()
-                return render_template('user_added.html')
+                print(generated_password)
+                return render_template('user_added.html', password=generated_password, username=username)
             else:
                 return render_template('add.html')
         elif request.method == 'GET':
