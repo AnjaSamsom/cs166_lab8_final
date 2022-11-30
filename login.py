@@ -18,6 +18,10 @@ the user types in a username and password and then
 can chose options from a menu
 """
 
+def execute(statement):
+    cur.execute(statement)
+    print(statement)
+    return cur.fetchall()
 
 def get_role():
     return role
@@ -27,12 +31,7 @@ def verify(username, password):
     u_success = False
     global role
 
-    cur.execute("SELECT username FROM info;")
-    usernames = cur.fetchall()
-
-    print(usernames)
-    print(username)
-
+    usernames = execute("SELECT username FROM info;")
 
     u_list = []
     for u in usernames:
@@ -42,20 +41,15 @@ def verify(username, password):
 
     if username in u_list:
         print("in usernames: " + username)
-        cur.execute("SELECT username FROM info where username = '"+ username +"';")
-        file_username = cur.fetchall()[0][0]
+        file_username = execute("SELECT username FROM info where username = '"+ username +"';")[0][0]
 
-        cur.execute("SELECT hashed_password FROM info where username = '"+ username +"';")
-        file_password = cur.fetchall()[0][0]
-        print(file_password)
+        file_password = execute("SELECT hashed_password FROM info where username = '"+ username +"';")[0][0]
 
         if file_username == username:
             u_success = True
         if u_success and authenticate(file_password, password):
-            print("matched")
             success = True
-            cur.execute("SELECT role FROM info where username = '"+ username +"';")
-            role = cur.fetchall()[0][0]
+            role = execute("SELECT role FROM info where username = '"+ username +"';")[0][0]
             return True
         else:
             return False
@@ -99,12 +93,20 @@ def generate_password():
 def add_user(username, raw_password):
     if username == "":
         return (False, "")
+
+    usernames = execute("SELECT username FROM info;")
+    u_list = []
+    for u in usernames:
+        u_list.append(u[0])
+    
+    if username in u_list:
+        return (False, "")
+
     if raw_password == "":
         raw_password = generate_password()
         password = hash_pw(raw_password)
-        cur.execute("SELECT Count(*) FROM info;")
-        number = cur.fetchall()[0][0]
-        cur.execute(f'INSERT INTO info (number, username, hashed_password, role) VALUES ({number}, "{username}", "{password}", "user");')
+        number = execute("SELECT Count(*) FROM info;")[0][0]
+        execute(f'INSERT INTO info (number, username, hashed_password, role) VALUES ({number}, "{username}", "{password}", "user");')
         conn.commit()
         return (True, raw_password)
     else:
@@ -128,9 +130,8 @@ def add_user(username, raw_password):
             if (len(raw_password) >= 8 and len(raw_password) <= 25) and lower and upper and number and special:
                 valid = True
                 password = hash_pw(raw_password)
-                cur.execute("SELECT Count(*) FROM info;")
-                number = cur.fetchall()[0][0]
-                cur.execute(f'INSERT INTO info (number, username, hashed_password, role) VALUES ({number}, "{username}", "{password}", "user");')
+                number = execute("SELECT Count(*) FROM info;")[0][0]
+                execute(f'INSERT INTO info (number, username, hashed_password, role) VALUES ({number}, "{username}", "{password}", "user");')
                 conn.commit()
                 return (True, raw_password)
             else:

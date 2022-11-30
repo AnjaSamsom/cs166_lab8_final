@@ -32,6 +32,8 @@ def new_user():
             # sanitizing input
             password = sanitize(password)
             username = sanitize(username)
+
+            print(username)
             
             # this method returns the true if the password is valid
             # and false if not, so we will send them to another
@@ -83,7 +85,7 @@ def add_time():
     else:
         return render_template('no_access.html')  
 
-@app.route("/login", methods=['GET', 'POST'])
+@app.route("/", methods=['GET', 'POST'])
 def home():
     if request.method == 'POST':
         submitted_pass = request.form['password']
@@ -93,16 +95,12 @@ def home():
         submitted_pass = sanitize(submitted_pass)
         submitted_username = sanitize(submitted_username)
 
-
-
-        print("app.py")
-
         success = verify(submitted_username, submitted_pass)
         print(success)
 
         if success:
             role = get_role()
-            return render_template('success.html')
+            return render_template('success.html', submitted_username, role)
         else:
             return render_template('nope.html')
     elif request.method == 'GET':
