@@ -2,6 +2,7 @@ from flask import Flask, render_template, request
 from login import *
 
 role = None
+user = None
 
 app = Flask(__name__)
 conn = sqlite3.connect("login_info.db")
@@ -11,7 +12,9 @@ cur = conn.cursor()
 
 @app.route("/success", methods=['GET', 'POST'])
 def logged_in():
-    return render_template('success.html')
+    role = get_role()
+    user = get_user()
+    return render_template('success.html', username=user, role=role)
 
 @app.route("/nope", methods=['GET', 'POST'])
 def not_logged_in():
@@ -41,15 +44,16 @@ def new_user():
             value = add_user(username, password)
             success = value[0]
             generated_password = value[1]
+            error = "Please select a valid password and an unused username"
             print(success)
             if success:
                 role = get_role()
                 print(generated_password)
                 return render_template('user_added.html', password=generated_password, username=username)
             else:
-                return render_template('add.html')
+                return render_template('add.html', error=error)
         elif request.method == 'GET':
-            return render_template('add.html')
+            return render_template('add.html', error = "")
     else:
         return render_template('no_access.html')
 
@@ -100,7 +104,8 @@ def home():
 
         if success:
             role = get_role()
-            return render_template('success.html', submitted_username, role)
+            user = submitted_username
+            return render_template('success.html', username=submitted_username, role=role)
         else:
             return render_template('nope.html')
     elif request.method == 'GET':

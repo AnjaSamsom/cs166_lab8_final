@@ -16,7 +16,8 @@ body{
     font-family: "Optima", sans-serif;
     border-radius: 0.2em;
     text-decoration: none;
-    width:75%;
+    width:45%;
+    padding: 2%;
     margin:auto;
     border-style: dotted;
     border-color:var(--sage);
@@ -68,10 +69,16 @@ p{
 
 }
 
+#welcome{
+    margin:auto;
+}
+
 h1{
     width: 80%;
     margin: auto;
 }
+
+
 
 
 

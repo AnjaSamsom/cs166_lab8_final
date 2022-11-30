@@ -26,10 +26,13 @@ def execute(statement):
 def get_role():
     return role
 
+def get_user():
+    return user
 # read in login information and verify
 def verify(username, password):
     u_success = False
     global role
+    global user
 
     usernames = execute("SELECT username FROM info;")
 
@@ -50,6 +53,7 @@ def verify(username, password):
         if u_success and authenticate(file_password, password):
             success = True
             role = execute("SELECT role FROM info where username = '"+ username +"';")[0][0]
+            user = username
             return True
         else:
             return False
