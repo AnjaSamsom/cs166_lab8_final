@@ -3,6 +3,8 @@ from login import *
 
 role = None
 user = None
+try_counter = 0
+
 
 app = Flask(__name__)
 conn = sqlite3.connect("login_info.db")
@@ -91,24 +93,29 @@ def add_time():
 
 @app.route("/", methods=['GET', 'POST'])
 def home():
-    
-    if request.method == 'POST':
+    if try_counter >= 3:
+        message = "You have tried and failed three times, please restart the application and remember your password"
+        return render_template('nope.html', text=message)
+    elif request.method == 'POST':
         submitted_pass = request.form['password']
         submitted_username = request.form['username']
+
+        try_counter +=1
 
         # sanitizing input
         submitted_pass = sanitize(submitted_pass)
         submitted_username = sanitize(submitted_username)
 
         success = verify(submitted_username, submitted_pass)
-        try_counter = 0
 
         if success:
             role = get_role()
             user = submitted_username
+            try_counter =0
             return render_template('success.html', username=submitted_username, role=role)
         else:
             try_counter += 1
-            return render_template('nope.html')
+            message = "Given username and password do not match, please enter the correct information"
+            return render_template('nope.html', text=message)
     elif request.method == 'GET':
         return render_template('home.html')
