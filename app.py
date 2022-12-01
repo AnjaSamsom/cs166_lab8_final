@@ -3,14 +3,22 @@ from login import *
 
 role = None
 user = None
-try_counter = 0
-
-
+try_counter = 3
 app = Flask(__name__)
 conn = sqlite3.connect("login_info.db")
 cur = conn.cursor()
 
 # run this with flask --app app run
+
+def get_tries():
+    print(try_counter)
+    return try_counter
+def reduce():
+    try_counter = try_counter -1
+    return try_counter
+def reset():
+    try_counter = 3
+    return try_counter
 
 @app.route("/success", methods=['GET', 'POST'])
 def logged_in():
@@ -93,14 +101,14 @@ def add_time():
 
 @app.route("/", methods=['GET', 'POST'])
 def home():
-    if try_counter >= 3:
-        message = "You have tried and failed three times, please restart the application and remember your password"
-        return render_template('nope.html', text=message)
+    if get_tries() <= 0:
+        message = "You have tried and failed three times, please restart the application and remember your password."
+        return render_template('nope.html', text=message, attempts=get_tries())
     elif request.method == 'POST':
         submitted_pass = request.form['password']
         submitted_username = request.form['username']
 
-        try_counter +=1
+        reduce()
 
         # sanitizing input
         submitted_pass = sanitize(submitted_pass)
@@ -111,11 +119,11 @@ def home():
         if success:
             role = get_role()
             user = submitted_username
-            try_counter =0
+            reset()
             return render_template('success.html', username=submitted_username, role=role)
         else:
-            try_counter += 1
+            reduce()
             message = "Given username and password do not match, please enter the correct information"
-            return render_template('nope.html', text=message)
+            return render_template('nope.html', text=message, attempts=get_tries())
     elif request.method == 'GET':
         return render_template('home.html')
