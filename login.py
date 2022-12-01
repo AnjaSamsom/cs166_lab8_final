@@ -110,7 +110,8 @@ def add_user(username, raw_password):
         raw_password = generate_password()
         password = hash_pw(raw_password)
         number = execute("SELECT Count(*) FROM info;")[0][0]
-        execute(f'INSERT INTO info (number, username, hashed_password, role) VALUES ({number}, "{username}", "{password}", "user");')
+        data_to_insert = [(number), ("username"), ("password"), ("user")]
+        execute(f'INSERT INTO info (number, username, hashed_password, role) VALUES (?,?,?,?)', data_to_insert)
         conn.commit()
         return (True, raw_password)
     else:
@@ -135,8 +136,8 @@ def add_user(username, raw_password):
                 valid = True
                 password = hash_pw(raw_password)
                 number = execute("SELECT Count(*) FROM info;")[0][0]
-                execute(f'INSERT INTO info (number, username, hashed_password, role) VALUES ({number}, "{username}", "{password}", "user");')
-                conn.commit()
+                data_to_insert = [(number), ("username"), ("password"), ("user")]
+                execute(f'INSERT INTO info (number, username, hashed_password, role) VALUES (?,?,?,?)', data_to_insert)                conn.commit()
                 return (True, raw_password)
             else:
                 return (False, "")
