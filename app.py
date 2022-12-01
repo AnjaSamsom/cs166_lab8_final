@@ -91,6 +91,7 @@ def add_time():
 
 @app.route("/", methods=['GET', 'POST'])
 def home():
+    
     if request.method == 'POST':
         submitted_pass = request.form['password']
         submitted_username = request.form['username']
@@ -100,13 +101,14 @@ def home():
         submitted_username = sanitize(submitted_username)
 
         success = verify(submitted_username, submitted_pass)
-        print(success)
+        try_counter = 0
 
         if success:
             role = get_role()
             user = submitted_username
             return render_template('success.html', username=submitted_username, role=role)
         else:
+            try_counter += 1
             return render_template('nope.html')
     elif request.method == 'GET':
         return render_template('home.html')
