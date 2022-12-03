@@ -36,6 +36,9 @@ def verify(username, password):
     """ 
     read in login information and verify
     """
+    username = sanitize(username)
+    password = sanitize(password)
+
     u_success = False
     global role
     global user
