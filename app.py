@@ -1,6 +1,18 @@
 from flask import Flask, render_template, request
 from login import *
 
+
+"""
+Lab 8 Final
+Anja Samsom
+CS 166
+this program is a computer repair company's computer.
+owner can access everything, employees and customers
+have limited access
+the user types in a username and password and then
+can chose options from a menu, including adding a new user
+"""
+
 role = None
 user = None
 try_counter = 3
@@ -10,15 +22,6 @@ cur = conn.cursor()
 
 # run this with flask --app app run
 
-def get_tries():
-    print(try_counter)
-    return try_counter
-def reduce():
-    try_counter = try_counter -1
-    return try_counter
-def reset():
-    try_counter = 3
-    return try_counter
 
 @app.route("/success", methods=['GET', 'POST'])
 def logged_in():
@@ -45,8 +48,6 @@ def new_user():
             # sanitizing input
             password = sanitize(password)
             username = sanitize(username)
-
-            print(username)
             
             # this method returns the true if the password is valid
             # and false if not, so we will send them to another
@@ -55,7 +56,6 @@ def new_user():
             success = value[0]
             generated_password = value[1]
             error = "Please select a valid password and an unused username"
-            print(success)
             if success:
                 role = get_role()
                 print(generated_password)
@@ -101,14 +101,13 @@ def add_time():
 
 @app.route("/", methods=['GET', 'POST'])
 def home():
-    if get_tries() <= 0:
+    global try_counter
+    if try_counter <= 0:
         message = "You have tried and failed three times, please restart the application and remember your password."
-        return render_template('nope.html', text=message, attempts=get_tries())
+        return render_template('nope.html', text=message, attempts=try_counter)
     elif request.method == 'POST':
         submitted_pass = request.form['password']
         submitted_username = request.form['username']
-
-        reduce()
 
         # sanitizing input
         submitted_pass = sanitize(submitted_pass)
@@ -119,11 +118,11 @@ def home():
         if success:
             role = get_role()
             user = submitted_username
-            reset()
+            try_counter = 3
             return render_template('success.html', username=submitted_username, role=role)
         else:
-            reduce()
+            try_counter -= 1
             message = "Given username and password do not match, please enter the correct information"
-            return render_template('nope.html', text=message, attempts=get_tries())
+            return render_template('nope.html', text=message, attempts=try_counter)
     elif request.method == 'GET':
         return render_template('home.html')

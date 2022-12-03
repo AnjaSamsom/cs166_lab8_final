@@ -15,17 +15,27 @@ this program is a computer repair company's computer.
 owner can access everything, employees and customers
 have limited access
 the user types in a username and password and then
-can chose options from a menu
+can chose options from a menu, including adding a new user
 """
 
 
 def get_role():
+    """
+    function to return global variable role
+    """
     return role
 
+
 def get_user():
+    """
+    function to return global variable user
+    """
     return user
-# read in login information and verify
+
 def verify(username, password):
+    """ 
+    read in login information and verify
+    """
     u_success = False
     global role
     global user
@@ -58,11 +68,16 @@ def verify(username, password):
         else:
             return False
 
+
 def generate_password():
+    """
+    function to generate a secure password
+    """
     # how long is the password going to be
     pass_len = random.randint(8,25)
 
     # one random number for every character in the password
+    # source 3
     password_list = [random.randint(-1000,1000) for i in range (0,pass_len)]
 
     special = "!@#$^&*()_+-=<>?,./:;[]|"
@@ -94,7 +109,11 @@ def generate_password():
                 password += number[index]
     return password
 
+
 def add_user(username, raw_password):
+    """
+    function adds a new user with username and new raw password
+    """
     if username == "":
         return (False, "")
 
@@ -114,7 +133,7 @@ def add_user(username, raw_password):
         cur.execute("SELECT Count(*) FROM info;")
         number = cur.fetchall()[0][0]
         
-        data_to_insert = [(number), ("username"), ("password"), ("user")]
+        data_to_insert = [(number), (username), (password), ("user")]
         cur.execute(f'INSERT INTO info (number, username, hashed_password, role) VALUES (?,?,?,?)', data_to_insert)
         conn.commit()
         return (True, raw_password)
@@ -122,7 +141,7 @@ def add_user(username, raw_password):
         valid = False
         lower = False
         upper = False
-        number = False
+        digit = False
         special = False
         while valid == False:
             for char in raw_password:
@@ -131,17 +150,18 @@ def add_user(username, raw_password):
                 elif char.isupper():
                     upper = True
                 elif char.isdigit():
-                    number = True
+                    digit = True
                 else: 
                     # making sure passwords don't have characters that I will filter out later for XSS
                     if char != "%" and char != "'" and char != '"':
                         special = True
-            if (len(raw_password) >= 8 and len(raw_password) <= 25) and lower and upper and number and special:
+            if (len(raw_password) >= 8 and len(raw_password) <= 25) and lower and upper and digit and special:
                 valid = True
                 password = hash_pw(raw_password)
                 cur.execute("SELECT Count(*) FROM info;")
                 number = cur.fetchall()[0][0]
-                data_to_insert = [(number, "username", "password", "user")]
+                data_to_insert = [(number), (username), (password), (user)]
+                print(data_to_insert)
                 cur.execute('INSERT INTO info (number, username, hashed_password, role) VALUES (?,?,?,?)', data_to_insert)                
                 conn.commit()
                 return (True, raw_password)
@@ -150,6 +170,9 @@ def add_user(username, raw_password):
 
 
 def sanitize(inputted):
+    """
+    sanitizes input
+    """
     inputted = inputted.replace("'", "")
     inputted = inputted.replace('"', "")
     inputted = inputted.replace("%", "")
