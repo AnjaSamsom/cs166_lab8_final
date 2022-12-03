@@ -28,6 +28,7 @@ hosted on flask
 * my generate password function does not include characters that I filter out later
 * I have handled my exceptions to make sure that my program won't crash if people type certain things in the text boxes
 or nothing and crash the program. I also drop the table if it already exists with loading the csv into a SQLite database. 
+* also you cannot get to urls that you son't have access too, even if they exist!
 
 
 
